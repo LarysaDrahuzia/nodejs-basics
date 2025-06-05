@@ -1,11 +1,11 @@
-import { HttpError } from 'http-errors'; // Імпортуємо клас HttpError для обробки помилок HTTP з відповідними статус-кодами
+import { isHttpError } from 'http-errors'; // Імпортуємо клас HttpError для обробки помилок HTTP з відповідними статус-кодами
 
 export const errorHandler = (err, req, res, next) => {
   // Перевірка, чи отримали ми помилку від createHttpError
-  if (err instanceof HttpError) {
+  if (isHttpError(err) === true) {
     res.status(err.status).json({
       status: err.status,
-      message: err.name,
+      message: err.message,
       data: err,
     });
     return;
