@@ -30,6 +30,8 @@ const studentsSchema = new Schema(
     },
     photo: {
       type: String,
+      required: false,
+      default: null,
     },
   },
   {

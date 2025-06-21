@@ -49,7 +49,17 @@ export const getStudentByIdController = async (req, res) => {
 };
 
 export const createStudentController = async (req, res) => {
-  const student = await createStudent(req.body);
+  const photo = req.file;
+  let photoUrl;
+  if (photo) {
+    photoUrl = await saveFileToCloudinary(photo);
+  }
+
+  const student = await createStudent({
+    ...req.body,
+    userId: req.user._id,
+    photo: photoUrl,
+  });
 
   res.status(201).json({
     status: 201,
@@ -89,17 +99,6 @@ export const upsertStudentController = async (req, res, next) => {
 export const patchStudentController = async (req, res, next) => {
   const { studentId } = req.params;
   const photo = req.file;
-
-  // {
-  //   fieldname: 'photo',
-  //   originalname: 'download.jpeg',
-  //   encoding: '7bit',
-  //   mimetype: 'image/jpeg',
-  //   destination: '/Users/borysmeshkov/Projects/goit-study/students-app/temp',
-  //   filename: '1710709919677_download.jpeg',
-  //   path: '/Users/borysmeshkov/Projects/goit-study/students-app/temp/1710709919677_download.jpeg',
-  //   size: 7
-  // }
 
   let photoUrl;
   if (photo) {
